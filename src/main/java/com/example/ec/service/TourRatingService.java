@@ -2,7 +2,6 @@ package com.example.ec.service;
 
 import com.example.ec.domain.Tour;
 import com.example.ec.domain.TourRating;
-import com.example.ec.domain.TourRatingPk;
 import com.example.ec.repo.TourRatingRepository;
 import com.example.ec.repo.TourRepository;
 import org.slf4j.Logger;
@@ -34,7 +33,7 @@ public class TourRatingService {
 
     public void createNew(int tourId, Integer customerId, Integer score, String comment) throws NoSuchElementException {
         LOGGER.info("Create Rating for tour {} of customers {}", tourId, customerId);
-        tourRatingRepository.save(new TourRating(new TourRatingPk(verifyTour(tourId), customerId), score, comment));
+        tourRatingRepository.save(new TourRating(verifyTour(tourId), customerId, score, comment));
     }
 
     public Optional<TourRating> lookupRatingById(int id) {
@@ -90,7 +89,7 @@ public class TourRatingService {
         tourRepository.findById(tourId).ifPresent(tour -> {
             for (Integer c : customers) {
                 LOGGER.debug("Attempt to create tour rating for customer {}", c);
-                tourRatingRepository.save(new TourRating(new TourRatingPk(tour, c), score, ""));
+                tourRatingRepository.save(new TourRating(tour, c, score));
             }
         });
     }
@@ -102,7 +101,7 @@ public class TourRatingService {
     }
 
 
-    private TourRating verifyTourRating(int tourId, int customerId) throws NoSuchElementException {
+    TourRating verifyTourRating(int tourId, int customerId) throws NoSuchElementException {
         return tourRatingRepository.findByPkTourIdAndPkCustomerId(tourId, customerId).orElseThrow(() ->
                 new NoSuchElementException("Tour-Rating pair for request("
                         + tourId + " for customer" + customerId));
