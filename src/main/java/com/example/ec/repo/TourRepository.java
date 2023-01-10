@@ -8,8 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-public interface TourRepository extends PagingAndSortingRepository<Tour, String> {
-    Page<Tour> findByTourPackageCode(@Param("code")String code, Pageable peageable);
+public interface TourRepository extends PagingAndSortingRepository<Tour, Integer> {
+    Page<Tour> findByTourPackageCode(@Param("code")String code, Pageable pageable);
 
     @Override
     @RestResource(exported = false)
@@ -25,7 +25,7 @@ public interface TourRepository extends PagingAndSortingRepository<Tour, String>
 
     @Override
     @RestResource(exported = false)
-    void deleteById(String string);
+    void deleteById(Integer integer);
 
     @Override
     @RestResource(exported = false)
