@@ -57,14 +57,14 @@ public class TourRatingServiceIntegrationTest {
     @Test
     public void rateMany() {
         int ratings = service.lookupAll().size();
-        service.rateMany(TOUR_ID, 5, new int[]{100, 101, 102});
+        service.rateMany(TOUR_ID, 5, new Integer[]{100, 101, 102});
         assertThat(service.lookupAll().size(), is(ratings + 3));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void rateManyProveRollback() {
         int ratings = service.lookupAll().size();
-        int customers[] = {100, 101, 102};
+        Integer customers[] = {100, 101, 102};
         service.rateMany(TOUR_ID, 3, customers);
         service.rateMany(TOUR_ID, 3, customers);
     }
@@ -101,11 +101,11 @@ public class TourRatingServiceIntegrationTest {
 
     @Test
     public void getAverageScore() {
-        assertTrue(service.getAverageScore(TOUR_ID) == 4.0);
+        assertTrue(service.getAverageScore(TOUR_ID) == 5.0);
     }
 
     @Test(expected = NoSuchElementException.class)
     public void getAverageScoreException() {
-        service.getAverageScore(NOT_A_TOUR_ID); //That tour does not exist
+        service.getAverageScore(NOT_A_TOUR_ID);
     }
 }

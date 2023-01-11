@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -34,7 +33,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-//@ContextConfiguration(locations={"classpath:/WEB-INF/application-context.xml"})
 public class TourRatingControllerTest {
 
     private static final int TOUR_ID = 999;
@@ -80,7 +78,7 @@ public class TourRatingControllerTest {
 
     @Test
     public void createManyTourRatings() throws Exception {restTemplate.postForEntity(TOUR_RATINGS_URL + "/" + SCORE + "?customers=" + CUSTOMER_ID, ratingDto, Void.class);
-        verify(serviceMock).rateMany(TOUR_ID, SCORE, new int[] {CUSTOMER_ID});
+        verify(serviceMock).rateMany(TOUR_ID, SCORE, new Integer[] {CUSTOMER_ID});
     }
 
     @Test

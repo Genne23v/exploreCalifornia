@@ -44,8 +44,8 @@ public class TourRatingServiceTest {
     public void setupReturnValuesOfMockMethods() {
         when(tourRepositoryMock.findById(TOUR_ID)).thenReturn(Optional.of(tourMock));
         when(tourMock.getId()).thenReturn(TOUR_ID);
-        when(tourRatingRepositoryMock.findByPkTourIdAndPkCustomerId(TOUR_ID,CUSTOMER_ID)).thenReturn(Optional.of(tourRatingMock));
-        when(tourRatingRepositoryMock.findByPkTourId(TOUR_ID)).thenReturn(Arrays.asList(tourRatingMock));
+        when(tourRatingRepositoryMock.findByTourIdAndCustomerId(TOUR_ID,CUSTOMER_ID)).thenReturn(Optional.of(tourRatingMock));
+        when(tourRatingRepositoryMock.findByTourId(TOUR_ID)).thenReturn(Arrays.asList(tourRatingMock));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class TourRatingServiceTest {
     public void lookupRatings() {
         Pageable pageable = mock(Pageable.class);
         Page page = mock(Page.class);
-        when(tourRatingRepositoryMock.findByPkTourId(1, pageable)).thenReturn(page);
+        when(tourRatingRepositoryMock.findByTourId(1, pageable)).thenReturn(page);
         assertThat(service.lookupRatings(TOUR_ID, pageable), is(page));
     }
 
@@ -82,7 +82,7 @@ public class TourRatingServiceTest {
 
     @Test
     public void rateMany() {
-        service.rateMany(TOUR_ID, 10, new int[]{CUSTOMER_ID, CUSTOMER_ID + 1});
+        service.rateMany(TOUR_ID, 10, new Integer[]{CUSTOMER_ID, CUSTOMER_ID + 1});
         verify(tourRatingRepositoryMock, times(2)).save(any(TourRating.class));
     }
 

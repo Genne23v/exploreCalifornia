@@ -47,7 +47,7 @@ public class TourRatingService {
 
     public Page<TourRating> lookupRatings(int tourId, Pageable pageable) throws NoSuchElementException  {
         LOGGER.info("Lookup ratings for tour {}", tourId);
-        return tourRatingRepository.findByPkTourId(verifyTour(tourId).getId(), pageable);
+        return tourRatingRepository.findByTourId(verifyTour(tourId).getId(), pageable);
     }
 
     public TourRating update(int tourId, Integer customerId, Integer score, String comment) throws NoSuchElementException {
@@ -79,12 +79,12 @@ public class TourRatingService {
 
     public Double getAverageScore(int tourId)  throws NoSuchElementException  {
         LOGGER.info("Get average score of tour {} by customers {}", tourId);
-        List<TourRating> ratings = tourRatingRepository.findByPkTourId(verifyTour(tourId).getId());
+        List<TourRating> ratings = tourRatingRepository.findByTourId(verifyTour(tourId).getId());
         OptionalDouble average = ratings.stream().mapToInt((rating) -> rating.getScore()).average();
         return average.isPresent() ? average.getAsDouble():null;
     }
 
-    public void rateMany(int tourId,  int score, int [] customers) {
+    public void rateMany(int tourId,  int score, Integer [] customers) {
         LOGGER.info("Rate tour {} by customers {}", tourId, Arrays.asList(customers).toString());
         tourRepository.findById(tourId).ifPresent(tour -> {
             for (Integer c : customers) {
@@ -102,7 +102,7 @@ public class TourRatingService {
 
 
     TourRating verifyTourRating(int tourId, int customerId) throws NoSuchElementException {
-        return tourRatingRepository.findByPkTourIdAndPkCustomerId(tourId, customerId).orElseThrow(() ->
+        return tourRatingRepository.findByTourIdAndCustomerId(tourId, customerId).orElseThrow(() ->
                 new NoSuchElementException("Tour-Rating pair for request("
                         + tourId + " for customer" + customerId));
     }

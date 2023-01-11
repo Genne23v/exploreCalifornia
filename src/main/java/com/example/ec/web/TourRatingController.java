@@ -42,7 +42,7 @@ public class TourRatingController {
     @PostMapping("/{score}")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Give Many Tours Same Score")
-    public void createManyTourRatings(@PathVariable(value = "tourId") int tourId, @PathVariable(value = "score") int score, @RequestParam("customers") int customers[]) {
+    public void createManyTourRatings(@PathVariable(value = "tourId") int tourId, @PathVariable(value = "score") int score, @RequestParam("customers") Integer customers[]) {
         LOGGER.info("POST /tours/{}/ratings", tourId, score);
         tourRatingService.rateMany(tourId, score, customers);
     }
